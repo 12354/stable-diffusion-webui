@@ -28,6 +28,16 @@ def css(opt):
     #generate, #img2img_mask_btn, #img2img_edit_btn {
         align-self: stretch;
     }
+    #highlight{
+     font-size: 1.2rem
+     }
+    #highlight .uppercase{
+        text-transform: initial;
+
+    }
+    #highlight .textfield .textspan:nth-child(1){
+        font-size: 1.2rem
+    }
     """
     return styling if opt.no_progressbar_hiding else styling + css_hide_progressbar
 
@@ -65,3 +75,6 @@ return x;
 }"""
 js_copy_selected_txt2img = "async (x) => {" + js_part_getindex_txt2img + js_part_copy_to_clipboard
 js_copy_selected_img2img = "async (x) => {" + js_part_getindex_img2img + js_part_copy_to_clipboard
+
+
+js_copy_txt2img_output = "(x) => {navigator.clipboard.writeText(document.querySelector('gradio-app').shadowRoot.querySelector('#highlight .textfield').textContent.replace(/\s+/g,' ').trim())}"
