@@ -1,4 +1,5 @@
 import argparse, os, sys, glob, re
+from pyngrok import ngrok
 
 from frontend.frontend import draw_gradio_ui
 from frontend.job_manager import JobManager, JobInfo
@@ -2151,6 +2152,13 @@ class ServerLauncher(threading.Thread):
         self.demo = demo
 
     def run(self):
+        ngrok.kill()
+        NGROK_AUTH_TOKEN = os.getenv('NGROK_AUTH_TOKEN')
+        ngrok.set_auth_token(NGROK_AUTH_TOKEN)
+        # Open an HTTPs tunnel on port 5000 for http://localhost:5000
+        public_url = ngrok.connect(opt.port, "http")
+        print("Tracking URL:", public_url)
+        
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         gradio_params = {
